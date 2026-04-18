@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetWatch | بوابة التوعية</title>
+  <style>
+    :root {
+      --bg1: #08121f;
+      --bg2: #0f2235;
+      --card: rgba(10, 22, 37, 0.78);
+      --line: rgba(95, 255, 214, 0.18);
+      --text: #eafcff;
+      --muted: #a9c8cf;
+      --primary: #40f0c7;
+      --primary-dark: #11c8a3;
+      --danger: #ff6b6b;
+      --warning: #ffd166;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Tahoma", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(64,240,199,.14), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(17,200,163,.10), transparent 24%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x: hidden;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(64,240,199,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(64,240,199,.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+      mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
+      pointer-events: none;
+    }
+
+    .wrap {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-card {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(64,240,199,.12);
+      color: var(--primary);
+      border: 1px solid rgba(64,240,199,.22);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 6vw, 64px);
+      line-height: 1.08;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .alert-box {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 107, 107, 0.10);
+      border: 1px solid rgba(255, 107, 107, 0.25);
+    }
+
+    .alert-box strong {
+      color: #fff;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 700;
+      transition: .2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #06231f;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .status-card {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 22px;
+      background: radial-gradient(circle at 30% 30%, #6fffe2, #0f9179 68%, #0a4f45);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 24px rgba(255,255,255,.15), 0 10px 30px rgba(64,240,199,.18);
+      font-size: 34px;
+    }
+
+    .brand h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .mini {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .mini .num {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .section {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      padding: 22px;
+    }
+
+    .card h3 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    .tips {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tip {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .tip small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    .game-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .game {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(64,240,199,.08);
+      border: 1px solid rgba(64,240,199,.18);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .game-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .game-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .pulse {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      border: 1px solid rgba(64,240,199,.09);
+      left: -80px;
+      bottom: -120px;
+      box-shadow: 0 0 0 25px rgba(64,240,199,.03), 0 0 0 55px rgba(64,240,199,.02);
+      pointer-events: none;
+    }
+
+    .small-note {
+      margin-top: 16px;
+      color: var(--warning);
+      font-size: 13px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 10, 18, 0.74);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 50;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-box {
+      width: min(640px, 100%);
+      padding: 24px;
+      border-radius: 24px;
+      background: #08121d;
+      border: 1px solid rgba(64,240,199,.16);
+      box-shadow: var(--shadow);
+    }
+
+    .modal-box h3 { margin-top: 0; }
+    .modal-box p, .modal-box li {
+      line-height: 1.9;
+      color: var(--muted);
+    }
+
+    .modal-box ul { padding-right: 20px; }
+
+    @media (max-width: 960px) {
+      .hero, .section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero-card, .status-card, .card { padding: 18px; }
+      .mini-grid { grid-template-columns: 1fr; }
+      .hero-actions, .footer { flex-direction: column; align-items: stretch; }
+      .game { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="wrap">
+    <section class="hero">
+      <div class="panel hero-card">
+        <div class="badge">🛜 NetWatch | تجربة توعوية</div>
+        <h1>مو كل شبكة<br>آمنة</h1>
+        <p class="lead">
+          اتصالك بالشبكات العامة قد يعرّض بياناتك للخطر إذا كانت الشبكة غير موثوقة أو غير آمنة.
+          هذه صفحة توعوية من فريق NetWatch لتذكيرك بأبسط خطوات الحماية.
+        </p>
+
+        <div class="alert-box">
+          <strong>لو كانت هذه شبكة غير آمنة فعلًا، كان ممكن تتعرّض بياناتك للخطر.</strong>
+          لكن لا تقلق — هذه فعالية توعوية فقط، ولا يتم جمع كلمات مرور أو مراقبة نشاطك.
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#games">ابدأ التحدي 🎮</a>
+          <button class="btn btn-secondary" onclick="openTips()">كيف أحمي نفسي؟ 🛡️</button>
+        </div>
+
+      
+        <div class="pulse"></div>
+      </div>
+
+      <div class="panel status-card">
+        <div class="brand">
+          <div class="logo">🛡️</div>
+          <div>
+            <h2>NetWatch</h2>
+            <p>راقب اتصالك قبل ما يراقبك أحد</p>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="num">3</div>
+            <div>ألعاب تفاعلية</div>
+          </div>
+          <div class="mini">
+            <div class="num">30</div>
+            <div>ثانية للتوعية</div>
+          </div>
+          <div class="mini">
+            <div class="num">HTTPS</div>
+            <div>ابحث عن القفل قبل إدخال بياناتك</div>
+          </div>
+          <div class="mini">
+            <div class="num">VPN</div>
+            <div>طبقة إضافية للحماية على الشبكات العامة</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="panel card">
+        <h3>🚨 كيف تقلل الخطر؟</h3>
+        <div class="tips">
+          <div class="tip">تأكد من اسم الشبكة من الجهة الرسمية.<small>لا تتصل بأي اسم مشابه أو غريب.</small></div>
+          <div class="tip">لا تدخل بيانات حساسة على شبكة عامة.<small>خصوصًا الحسابات البنكية والبريد الرسمي.</small></div>
+          <div class="tip">استخدم HTTPS أو VPN عند الحاجة.<small>الحماية الإضافية تقلل احتمالية الخطر.</small></div>
+        </div>
+      </div>
+
+      <div class="panel card" id="games">
+        <h3>🎮 تحديات NetWatch</h3>
+        <div class="game-list">
+          <div class="game">
+            <div>
+              <div class="game-title">اكتشف الشبكة الخطرة</div>
+              <div class="game-desc">اختبر قدرتك على التمييز بين الشبكة الحقيقية والمزيفة.</div>
+            </div>
+            <a class="btn btn-primary" href="https://wordwall.net/resource/111632681" target="_blank" rel="noopener">ابدأ</a>
+          </div>
+
+          <div class="game">
+            <div>
+              <div class="game-title">صح أو خطأ</div>
+              <div class="game-desc">أسئلة سريعة عن أمان الشبكات العامة.</div>
+            </div>
+            <a class="btn btn-primary" href="https://wordwall.net/resource/111632922" target="_blank" rel="noopener">ابدأ</a>
+          </div>
+
+         
+        </div>
+      </div>
+
+      <div class="panel card">
+        <h3>🎁 بعد التحدي</h3>
+        <div class="tips">
+          <div class="tip">خذ ستيكر NetWatch الطريف.<small>اطلبوا من فريق NetWatch.</small></div>
+          <div class="tip">امسح QR للبوستر أو النصائح.<small> روابط و ملفات توعوية .</small></div>
+          <div class="tip">اسألوا فريق NetWatch.<small>اذ ودكم تفهمون الفكرة افضل</small></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="panel footer">
+      <div class="footer-note">
+        NetWatch — تجربة توعوية عن مخاطر الشبكات غير الآمنة.<br>
+        هذه الصفحة لا تجمع كلمات مرور ولا تراقب نشاط المستخدمين.
+      </div>
+      <button class="btn btn-secondary" onclick="window.print()">طباعة الصفحة أو حفظها PDF</button>
+    </div>
+  </div>
+
+  <div class="modal" id="tipsModal">
+    <div class="modal-box">
+      <h3>خطوات سريعة للحماية</h3>
+      <ul>
+        <li>تحقق من اسم الشبكة من المكان نفسه أو من المسؤول.</li>
+        <li>لا تدخل بيانات حساسة على الشبكات العامة.</li>
+        <li>افصل الاتصال التلقائي بالشبكات المفتوحة.</li>
+        <li>استخدم HTTPS وVPN عندما تحتاج.</li>
+        <li>الأفضل للمهام الحساسة: استخدم بيانات الجوال.</li>
+      </ul>
+      <div class="hero-actions" style="margin-top: 18px;">
+        <button class="btn btn-primary" onclick="closeTips()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openTips() {
+      document.getElementById('tipsModal').classList.add('show');
+    }
+    function closeTips() {
+      document.getElementById('tipsModal').classList.remove('show');
+    }
+    document.getElementById('tipsModal').addEventListener('click', function(e) {
+      if (e.target === this) closeTips();
+    });
+  </script>
+</body>
+</html>
